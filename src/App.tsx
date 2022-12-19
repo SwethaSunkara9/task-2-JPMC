@@ -36,7 +36,22 @@ class App extends Component<{}, IState> {
    * Get new data from server and update the state with the new data
    */
   getDataFromServer() {
-    DataStreamer.getData((serverResponds: ServerRespond[]) => {
+    let x=0;
+    const interval=setInterval(() => {
+      
+         DataStreamer.getData((serverResponds: ServerRespond[]) => {
+           this.setState({
+             data: serverResponds,
+             showgraph: true,
+           });
+         });
+      x++;
+      if(x>1000){
+        clearInterval(interval);
+      }
+    },100);
+  }
+    
       // Update the state by creating a new array of data that consists of
       // Previous data in the state and the new data from server
       this.setState({ data: [...this.state.data, ...serverResponds] });
